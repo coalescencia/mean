@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <script>
+
+        function probemos() {
+            // paso por referencia, se modifica el objeto:
+
+            var fechaCumple = new Date(1978,10, 3);
+
+            // por valor sería así:
+             // var otraFecha = new Date(fechaCumple)
+
+            var otraFecha = fechaCumple;
+            alert(fechaCumple);
+            alert(otraFecha);
+            otraFecha.setFullYear(1999,11,31);
+            alert(fechaCumple);
+            alert(otraFecha);
+        }
+
+        probemos();
+    
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

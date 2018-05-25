@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>cliente Rest</title>    
+</head>
+
+<script>
+    function getPeliculas(){
+        let xmlHttp = new XMLHttpRequest();
+        xmlHttp.open('get','http://localhost:8080/Ej01_REST/servicios/peliculas', true); // si los parámetros se envían por aquí es un get
+        xmlHttp.send();
+
+        // let respuesta =JSON.parse(xmlHttp.responseText);
+        xmlHttp.onreadystatechange = function() {
+           // console.log(this.readyState);
+            if(this.readyState == 4) {
+                if(this.status == 200) {
+                    rellenarPeliculas(JSON.parse(xmlHttp.responseText));
+                } else {
+                    procesarError();
+                }                
+            }        
+        }
+          
+    }
+
+    function rellenarPeliculas(datos){
+       console.log(datos);
+       // console.log(datos[1]);
+       let tabla = document.getElementById("tablaPeliculas");
+        for( let i = 0; i < datos.length; i ++) {
+           tabla.innerHTML += "<tr><td>"+datos[i].titulo+"</td><td>"+
+            datos[i].director+"</td><td>"+datos[i].genero+"</td><td>"+datos[i].year+"</td></tr>";
+       }       
+    }
+
+    function procesarError(){
+        alert("Error");
+    }
+
+    window.onload = function() {
+        getPeliculas();
+
+    }
+</script>
+<body>
+
+    <table align="center" border=2 width="90%">
+        <tr>
+            <td>Título</td>
+            <td>Director</td>
+            <td>Género</td>
+            <td>Año</td>
+        </tr>
+        <tbody id="tablaPeliculas"></tbody>
+
+    </table>
+    
+</body>
+</html>

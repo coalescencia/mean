@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Formulario películas</title>
+
+    <script src="jquery.js"></script> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<script>
+
+    let idPelicula = null;
+
+    function buscarPelicula(id) {
+        $.ajax({ url: '/peliculas/'+id })
+         .done(rellenarFormulario)
+         .fail(procesarError);
+    }
+
+    function rellenarFormulario(pelicula) {
+             
+        idPelicula = pelicula.id;
+
+        for( clave in pelicula ) {
+            $('#'+clave).val(pelicula[clave]);
+        }
+
+    }
+
+    function cancelar() {
+        window.location = "listadoPeliculas.html";
+    }
+
+    function insertar() {
+
+        let pelicula = {};
+        $('#formulario [campo]').each(
+            function() {
+                pelicula[this.id] = this.value;                        
+            }
+        );
+
+        console.log(pelicula);
+
+        $.ajax( { url: '/peliculas', 
+                  type: 'post',
+                  contentType: 'application/json',
+                  data: JSON.stringify(pelicula) })
+        .done(verListado) 
+        .fail(procesarError);
+                
+    }
+
+    function modificar() {
+        let pelicula = {};
+        $('#formulario [campo]').each(
+            function() {
+                pelicula[this.id] = this.value;                        
+            }
+        );
+        pelicula.id = idPelicula;
+        //console.log(pelicula);
+        $.ajax( { url: '/peliculas/'+idPelicula, 
+                  type: 'put',
+                  contentType: 'application/json',
+                  data: JSON.stringify(pelicula) })
+        .done(verListado) 
+        .fail(procesarError);
+    }
+
+ 
+    function borrar() {
+       
+        $.ajax( { url: '/peliculas/'+idPelicula, 
+                  type: 'delete'})                 
+        .done(verListado) 
+        .fail(procesarError);
+    }
+
+
+    function verListado(mensaje) {
+        // mensaje es el body de la respuesta
+        console.log("ver listado");
+        // pasar el mensaje a la pantalla de listado, varias formas: 
+
+        //por parámetro
+        //window.location = "listadoPeliculas.html?mensaje="+mensaje;
+        
+        //por cookies:
+        //document.cookie = "mensaje="+mensaje;
+
+        //session storage/local storage:
+        // session storage sólo se mantiene mientras esté abierto el navegador
+        sessionStorage.setItem("mensaje", mensaje);
+        
+
+        // local storage se mantiene aunque se cierre el navegador
+       // localStorage.setItem("mensaje", mensaje);
+
+        window.location = "listadoPeliculas.html";
+
+    }
+
+    $(inicializar);
+
+    function inicializar(){    
+        let idPelicula = sessionStorage.getItem("idPelicula");
+        if(idPelicula != null) {
+            buscarPelicula(idPelicula);
+            sessionStorage.removeItem("idPelicula");
+        }
+
+        $('#btnInsertar').click(insertar);
+        $('#btnCancelar').click(cancelar);
+        $('#btnModificar').click(modificar);
+       // $('#btnVaciar').click(vaciar);
+        $('#btnBorrar').click(borrar);
+    }
+
+    function procesarError(error){
+        console.error(error)
+    }
+
+</script>
+
+<body>
+    
+<div class=" text-center jumbotron">
+        
+    <h1>Películas 3000<small> by me</small></h1>
+        
+</div>
+
+
+
+
+<div class="row">
+    <div class="col-xs-0 col-sm-2"></div>
+    <div class="col-xs-12 col-sm-8">
+        <div class="text-center">
+            <input type="button" id="btnInsertar" value="Insertar" class="btn btn-primary ">
+            <input type="button" id="btnModificar" value="Modificar" class="btn btn-success ">
+            <input type="button" id="btnBorrar" value="Borrar" class="btn btn-danger ">
+            <!-- <input type="button" id="btnVaciar" value="Vaciar" class="btn btn-info "> -->
+            <input type="button" id="btnCancelar" value="Cancelar" class="btn btn-warning ">
+        </div>
+        <br>
+       <form id="formulario">
+
+           <div class="form-group row">
+               <label for="titulo" class="col-sm-2 col-form-label">Titulo:</label>
+              <div class="col-sm-10">
+                   <input type="text" class="form-control" id="titulo" campo="campo">
+              </div>               
+           </div>
+           <div class="form-group row">
+               <label for="director" class="col-sm-2 col-form-label" >Director:</label>
+              <div class="col-sm-10">
+                   <input type="text" class="form-control" id="director" campo="campo">
+              </div>               
+           </div>
+           <div class="form-group row">
+               <label for="genero" class="col-sm-2 col-form-label" >Género:</label>
+              <div class="col-sm-10">
+                   <input type="text" class="form-control" id="genero" campo="campo">
+              </div>               
+           </div>
+           <div class="form-group row">
+               <label for="year" class="col-sm-2 col-form-label">Año:</label>
+              <div class="col-sm-10">
+                   <input type="text" class="form-control" id="year" campo="campo">
+              </div>               
+           </div>
+
+       </form>
+
+
+
+
+    </div>
+    <div class="col-xs-0 col-sm-2"></div>
+</div>
+ 
+   <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>   
+   -->
+
+
+</body>
+</html>

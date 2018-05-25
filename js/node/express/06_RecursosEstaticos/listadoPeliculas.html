@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Listado películas</title>
+
+    <script src="jquery.js"></script> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!--  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+</head>
+
+<script>
+
+    
+    function nuevo() {
+        window.location = "formularioPeliculas.html";
+    }
+
+    function getPeliculas() {
+        //esto funciona pero está deprecated:
+      /*   $.ajax({ 'url': "/peliculas" ,
+                 'success': rellenarTablaPeliculas,
+                 'error': procesarError }); */
+
+            $.ajax( { url: '/peliculas'})  //ajax devuelve un objeto, este objeto tiene la función done, fail, allways
+                .done(rellenarTablaPeliculas)
+                .fail(procesarError);
+    
+    }
+
+    function rellenarTablaPeliculas(peliculas){
+        let tabla = $("#tablaPeliculas");
+        tabla.html('');
+        
+        for (let a = 0; a < peliculas.length; a++) {
+            let pelicula = peliculas[a];
+            $("<tr onclick=seleccionarPelicula("+pelicula.id+")>"+
+               ` <td>${pelicula.titulo}</td>
+                <td>${pelicula.director}</td>
+                <td>${pelicula.genero}</td>
+                <td>${pelicula.year}</td>             
+               </tr> `).appendTo(tabla);
+            
+        }
+    }
+
+    function procesarError(error) {
+        console.log(error);
+    }
+
+    $(inicializar);
+
+    function inicializar(){
+        getPeliculas();
+        $("#btnNuevo").click(nuevo);
+        $("#btnActualizar").click(getPeliculas);       
+
+        //buscamos la cookie o la session storage y agregarlo a un div
+        //let cookies = document.cookie;
+        //console.log("galletitas:"+cookies);
+        
+        console.log(sessionStorage.getItem("mensaje"));
+        
+        if(mensaje != null) {
+            sessionStorage.removeItem("mensaje");
+            $('#mensaje').html(` <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Success!</strong> Indicates a successful or positive action.
+            </div>`);
+        }
+       
+       
+        //console.log(localStorage.getItem("mensaje"));
+       
+    }
+
+    function seleccionarPelicula(peli) {
+        console.log(peli);
+        sessionStorage.setItem("idPelicula",peli);
+        window.location = "formularioPeliculas.html";
+    }
+
+
+</script>
+
+<body>
+    
+<div class=" text-center jumbotron">
+        
+    <h1>Películas 3000<small> by me</small></h1>
+        
+</div>
+<div class="row">        
+
+        <div id="mensaje"  class="col-xs-12 col-sm-8 offset-sm-2"> </div>
+</div>
+
+<h2 class="text-center">Listado de películas</h2>
+
+<div class="row">
+    <div class="col-xs-0 col-sm-2"></div>
+    <div class="col-xs-12 col-sm-8">
+        <div class="text-center">
+            <input type="button" id="btnNuevo" value="Nuevo" class="btn btn-primary ">
+            <input type="button" id="btnActualizar" value="Actualizar" class="btn btn-primary ">           
+        </div>
+        <br>
+        <table class="col-xs-12 table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Director</th>
+                        <th>Género</th>
+                        <th>Año</th>
+                    </tr>
+
+                </thead>
+                <tbody id="tablaPeliculas"></tbody>
+        </table>
+
+
+    </div>
+    <div class="col-xs-0 col-sm-2"></div>
+</div>
+   
+</body>
+</html>

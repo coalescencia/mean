@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Trabajo con fechas</title>
+</head>
+<style>
+    .caja {
+        width: 45%;
+        float: left;
+        border: 1px solid moccasin;
+    }
+
+</style>
+<script>
+
+        function calcular() {
+            dia1 = parseInt(document.getElementById("dia1").value);
+            mes1 = parseInt(document.getElementById("mes1").value);
+            year1 = parseInt(document.getElementById("year1").value);
+
+            fecha1 = new Date(year1, mes1, dia1);
+
+            dia2 = parseInt(document.getElementById("dia2").value);
+            mes2 = parseInt(document.getElementById("mes2").value);
+            year2 = parseInt(document.getElementById("year2").value);
+
+            fecha2 = new Date(year2, mes2, dia2);
+           
+            console.log(Math.abs(fecha1 - fecha2));
+        }
+
+
+</script>
+
+<body>
+
+   <div class="caja">
+
+        <h3>Fecha 1:</h3>
+        Día:<input type="text" id="dia1"><br />
+        Mes:<input type="text" id="mes1"><br />
+        Año:<input type="text" id="year1"><br />
+
+   </div>
+    
+
+    <div class="caja">
+        <h3>Fecha 2:</h3>        
+        Día:<input type="text" id="dia2"><br />
+        Mes:<input type="text" id="mes2"><br />
+        Año:<input type="text" id="year2"><br />
+    </div>
+
+    <button id="calcular" onclick="calcular()">Calcular diferencia</button>
+
+</body>
+</html>

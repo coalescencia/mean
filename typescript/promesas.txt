@@ -1,0 +1,36 @@
+https://scotch.io/tutorials/javascript-promises-for-dummies
+
+That is a promise. A promise has 3 states. They are:
+
+    Promise is pending: You don't know if you will get that phone until next week.
+    Promise is resolved: Your mom really buy you a brand new phone.
+    Promise is rejected: You don't get a new phone because your mom is not happy.
+
+var isMomHappy = false;
+
+// Promise
+var willIGetNewPhone = new Promise(
+    function (resolve, reject) {
+        if (isMomHappy) {
+            var phone = {
+                brand: 'Samsung',
+                color: 'black'
+            };
+            resolve(phone); // fulfilled (cumplido)
+        } else {
+            var reason = new Error('mom is not happy');
+            reject(reason); // reject
+        }
+
+    }
+);
+
+
+/ promise syntax look like this:
+
+new Promise(/* executor*/ function (resolve, reject) { ... } );
+
+What you need to remember is, when the result is successful, call resolve(your_success_value), 
+if the result fails, call reject(your_fail_value) in your promise. In our example, if mom is happy,
+ we will get a phone. Therefore, we call resolve function with phone variable. If mom is not happy, we will 
+ call reject function with a reason reject(reason); 

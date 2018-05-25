@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ajax y js</title>
+</head>
+
+<script>
+    // objeto XMLHttpRequest, utilizando este objeto enviamos la petición, recibimos la respuesta:
+
+    function peticionSincrona() {
+        let xmlHttp = new XMLHttpRequest();
+        
+        let parametros = "nombre="+document.getElementById("nombre").value;
+        // .open() recibe tres parámetros: (método, url, síncrono/asíncrono):
+        // Métodos: get, post, put, delete, patch, head:
+        // false = sincrono, 
+        // true = asíncrono
+        xmlHttp.open('get','http://localhost:8080/Ej01_EjemploAjax/buscar?'+parametros, false); // si los parámetros se envían por aquí es un get
+        
+        // si la petición es síncrona, NO se pasa a la siguiente respuesta
+        xmlHttp.send(); // si se envían por post se pone aquí los parámetros
+
+        let respuesta = xmlHttp.responseText;
+        let estado = xmlHttp.status;
+        let xml = xmlHttp.responseXML;
+
+        procesarRespuesta(xmlHttp.responseText);
+
+    }
+
+    function peticionAsincrona(){
+        let xmlHttp = new XMLHttpRequest();        
+        let parametros = "nombre="+document.getElementById("nombre").value;
+        xmlHttp.open('get','http://localhost:8080/Ej01_EjemploAjax/buscar?'+parametros, true);
+        xmlHttp.send();
+       
+        xmlHttp.onreadystatechange = function() {
+            //propiedad readyState, guarda un número de 0 a 4:
+            // 0- creado
+            // 1- open
+            // 2- enviado
+            // 3- comienza a recibir la respuesta
+            // 4- response complete
+            console.log(this.readyState);
+            if(this.readyState == 4) {
+                if(this.status == 200) {
+                    procesarRespuesta(xmlHttp.responseText);
+                } else {
+                    alert("ERROR");
+                }
+                
+            }
+
+
+        };
+
+        xmlHttp.onload = function() {
+            console.log("Respuesta:" + this.responseText);
+        }
+
+        xmlHttp.onerror = function() {
+            console.log("ERROR");
+        }
+
+    }
+
+    function procesarRespuesta(datos) {
+        document.getElementById("resultado").innerHTML = "<h2>"+datos+"</h2>";
+        
+    }
+
+    
+
+</script>
+
+<body>
+    <h2>Ajax</h2>
+
+    <br/>
+
+    <input type="text" name="" id="nombre">
+    <input type="button" name="" id="peticion sincrona" onclick="peticionSincrona()" value="peticion sincrona">
+    <input type="button" name="" id="peticion asincrona"  value="peticion asincrona" onclick="peticionAsincrona()">
+
+    <div id="resultado">
+
+    </div>
+    
+</body>
+</html>

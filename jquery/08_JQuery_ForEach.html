@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript">
+
+$(inicializar);
+
+function inicializar(){
+	
+	$("#form1 input[type=text]").val("");
+	
+    //Demasiado generico
+    $("h2"); 
+
+    //Un poco mejor
+    $("[id^=color-]");
+
+    //Perfecto
+    $("h2[id^=color-]");
+
+    console.log("=====================================");
+    let nodos = $("h2[id^=color-]");
+    for(let a=0; a<nodos.length; a++){
+        console.log(nodos[a].innerHTML);
+    }
+
+    console.log("=====================================");
+
+    $("h2[id^=color-]").each(function (){
+            //Dentro de esta función 'this' es el nodo
+            console.log(this.innerHTML);
+
+            //this es un (sin acritud) nodo normal y corriente
+            //this.html(); Esto falla estrepitosamente
+
+            //Con JQuery podemos 'enriquecer' un nodo para que cuente
+            //con todas las funciones de utilidad
+            $(this).html(); //Ahora si
+        });
+
+    console.log("=====================================");
+    $("h2[id^=color-]").each(function(){
+            let nodo = $(this);
+            let texto = nodo.text().trim();
+            
+            switch(texto){
+                case "Rojo"     : nodo.css("color","red");
+                                  break;
+                case "Azul"     : nodo.css("color","blue");
+                                  break;
+                case "Verde"    : nodo.css("color","green");
+                                  break;
+                case "Amarillo" : nodo.css("color","yellow");
+                                  break;
+                case "Fabada"   : nodo.css("color","#FABADA");
+                                  break;
+            }
+
+            //si la funcion devuelve false detiene el bucle;
+
+        });
+
+}
+
+</script>
+
+<body>
+
+<h1>JQuery for each</h1>
+
+<h2 id="color-1">Rojo</h2>
+<h2 id="color-2">Verde</h2>
+<h2 id="color-3">Azul</h2>
+<h2 id="color-4">Amarillo</h2>
+<h2 id="color-5">Fabada</h2>       
+<h2 id="color-1">Rojo</h2>
+<h2 id="color-2">Verde</h2>
+<h2 id="color-3">Azul</h2>
+<h2 id="color-4">Amarillo</h2>
+<h2 id="color-5">Fabada</h2>       
+    
+</body>
+</html>

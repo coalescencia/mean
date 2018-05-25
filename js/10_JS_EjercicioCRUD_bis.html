@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script type="text/javascript" src="10_JS_Libreria.js"></script>
+</head>
+
+<script type="text/javascript">
+
+function Videojuego(id, titulo, fabricante, year, tipo){
+
+    if( typeof Videojuego.contador == 'undefined'){
+        Videojuego.contador = 1;
+    }
+
+    if( id == null){
+        this.id = Videojuego.contador;
+        Videojuego.contador++
+    } else {
+        this.id = id;
+    }
+    this.titulo     = titulo;
+    this.fabricante = fabricante;
+    this.year       = year;
+    this.tipo       = tipo;
+}
+
+//Variables 'globales'
+let videojuegos = [];
+let idVideojuegoSel = 0;
+
+function insertar(){
+    let videojuego = crearObjeto("formulario", Videojuego);
+    videojuegos.push(videojuego);
+    actualizarTabla();
+    vaciarFormulario();
+}
+
+function seleccionarVideojuego(){
+    //Aqui 'this' es el tr de la tabla en el que se ha hecho click
+    let id = this.objeto.id;    
+    for(let a=0; a<videojuegos.length; a++){
+        let videojuego = videojuegos[a];
+        if(videojuego.id == id){
+            rellenarFormulario("formulario", videojuego);
+            idVideojuegoSel = id;
+            break;
+        }
+    }
+    modoSeleccion();
+}
+
+function actualizarTabla(){
+    crearTabla({ 'objetos' : videojuegos, 
+                 'propiedades' : [ 'titulo', 'fabricante', 'year', 'tipo'],
+                 'cabeceras' : [ 'Título', 'Fabricante', 'Year', 'Tipo '],
+                 'onclick' : seleccionarVideojuego,
+                 'enchufarselaA' : 'tablaVideojuegos'
+                 });
+}
+
+function vaciarFormulario(){
+    vaciarFormularioGenerico("formulario");
+    modoInsercion();    
+}
+
+function modificar(){
+    for(let a=0; a<videojuegos.length; a++){
+        let videojuego = videojuegos[a];
+        if(videojuego.id == idVideojuegoSel){
+            let nuevo = crearObjeto('formulario', Videojuego);
+            videojuegos[a] = nuevo;
+            break;           
+        }
+    }
+    actualizarTabla();
+    vaciarFormulario();
+}
+
+function borrar(){
+    for(let a=0; a<videojuegos.length; a++){
+        let videojuego = videojuegos[a];
+        if(videojuego.id == idVideojuegoSel){
+            videojuegos.splice(a, 1);
+            break;           
+        }
+    }
+    actualizarTabla();
+    vaciarFormulario();
+}
+
+function modoInsercion(){
+    document.getElementById("btn_insertar").disabled  = false;
+    document.getElementById("btn_modificar").disabled = true;
+    document.getElementById("btn_borrar").disabled    = true;
+}
+
+function modoSeleccion(){
+    document.getElementById("btn_insertar").disabled  = true;
+    document.getElementById("btn_modificar").disabled = false;
+    document.getElementById("btn_borrar").disabled    = false;
+}
+
+window.onload = function(){
+    addOnclick();
+    actualizarTabla();
+    modoInsercion();
+}
+
+</script>
+
+<body>
+
+    <h1 align="center">
+        <font color="lightGreen">
+            Videojuegos        
+        </font>
+    </h1>
+
+    <div align="center">
+        <input type="button" id="btn_insertar"  value="Insertar"/>
+        <input type="button" id="btn_modificar" value="Modificar"/>
+        <input type="button" id="btn_borrar"    value="Borrar"/>
+        <input type="button" id="btn_vaciar"    value="Vaciar"/>
+    </div>
+
+    <br/>
+
+    <form id="formulario">
+        <table align="center">
+            <tr>
+                <td>Titulo</td>
+                <td>
+                    <input type="text" name="titulo" id="titulo"/>
+                </td>                
+            </tr>
+            <tr>
+                <td>Fabricante</td>
+                <td>
+                    <input type="text" name="fabricante" id="fabricante"/>
+                </td>                
+            </tr>
+            <tr>
+                <td>Año</td>
+                <td>
+                    <input type="text" name="year" id="year"/>
+                </td>                
+            </tr>
+            <tr>
+                <td>Tipo</td>
+                <td>
+                    <input type="text" name="tipo" id="tipo"/>
+                </td>                
+            </tr>
+        </table>
+        
+    </form>
+
+    <br/>
+
+    <div id="tablaVideojuegos"></div>
+
+</body>
+
+</html>
+
+

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <script>
+        function suma(){
+            var a = document.getElementById("op1").value;
+            var b = document.getElementById("op2").value;
+            var decimal = parseInt(document.getElementById("decimales").value);
+            document.getElementById("result").innerHTML = (parseFloat(a) + parseFloat(b)).toFixed(decimal);
+        }
+
+        function resta(){
+            var a = document.getElementById("op1").value;
+            var b = document.getElementById("op2").value;
+            var decimal = parseInt(document.getElementById("decimales").value);
+            document.getElementById("result").innerHTML = (parseFloat(a) - parseFloat(b)).toFixed(decimal);
+        }
+
+        function producto(){
+            var a = document.getElementById("op1").value;
+            var b = document.getElementById("op2").value;
+            var decimal = parseInt(document.getElementById("decimales").value);
+            document.getElementById("result").innerHTML = (parseFloat(a) * parseFloat(b)).toFixed(decimal);
+        }
+
+        function division(){
+            var a = document.getElementById("op1").value;
+            var b = document.getElementById("op2").value;
+            var decimal = parseInt(document.getElementById("decimales").value);
+            if(b==0) {
+                alert("No se puede dividir por cero")
+            }
+            else{
+                document.getElementById("result").innerHTML = (parseFloat(a) / parseFloat(b)).toFixed(decimal);
+            }
+            
+        }
+
+        
+
+        
+    </script>
+
+</head>
+<body>
+    <input type="text" id="op1">
+    <input type="text" id="op2">
+    <br>Número de decimales: 
+    <input type="text" id="decimales">
+    <p id="result">Resultado</p>
+    <button type="button" onclick="suma()">Sumar</button>
+    <button type="button" onclick="resta()">Restar</button>
+    <button type="button" onclick="producto()">Multiplicar</button>
+    <button type="button" onclick="division()">Dividir</button>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<html>
+
+<script>
+//Las funciones en JS son OBJETOS
+//Asociadas siempre a otros objetos
+
+//Las funciones no indican si devuelven algo o si son void (en realidad
+//todas las funciones devuelven algo)
+function saludar(){
+    console.log("Hola que tal");
+}
+
+saludar();
+let var1 = saludar();
+console.log(var1);
+
+//Las funciones pueden recibir parámetros pero sin indicar el tipo (naturalmente)
+function sumar1(s1, s2){
+    console.log("Sumar1:"+(s1+s2));
+}
+sumar1(10,25);
+//Puede invocarse una función enviando más o menos parámetros de los 
+//declarados
+sumar1(30);
+sumar1(1,2,3,4,5,6);
+
+//Podemos acceder a los parámetros 'extra' dentro de la funcion
+console.log("==========================================");
+function sumar2(s1,s2){
+    console.log(arguments.length);
+    for(escort=0; escort<arguments.length; escort++){
+        console.log(arguments[escort]);
+    }
+}
+sumar2(1,2,3,4,5,6,7,8,9);
+
+//Las funciones en js pueden tener varios return devuelvan estos
+//algo o no
+console.log("==========================================");
+function sumar3(s1,s2){
+    return s1+s2;
+}
+console.log("sumar3:"+sumar3(1,2));
+console.log("sumar3:"+sumar3);
+
+//Funciones nested/clojures
+console.log("==========================================");
+function imprimirDatos(pelicula){
+
+    //Podemos colocar tantas funciones nested como queramos
+    //No hay limite para los niveles de funciones anidadas
+    function imprimir(datos){
+        console.log(datos);
+    }
+
+    imprimir(pelicula);
+
+}
+
+imprimirDatos("Blade Runner");
+//imprimir("Die Hard"); Las funciones nested no se pueden invocar desde fuera del nido
+
+//Si las funciones son objetos entonces podemos hacer esto:
+let funcion = function(str){
+    console.log("Str:"+str);
+    return "VALOR";
+};
+
+let valor = funcion("Hola");
+console.log("Valor:"+valor);
+
+let funcion2 = funcion;
+console.log(funcion2("Que tal"));
+
+///////////////////////////////////////
+let funcion3 = function(){
+    let f = function(){
+        return "MOVIDA";
+    };
+    return f;
+}
+
+let funcion4 = funcion3; //funcion4 es la funcion3 entera
+let funcion5 = funcion3(); //funcion5 es unicamente la funcion 'f'
+
+//Podemos declarar las funciones creando un objeto del tipo Function
+//No es muy recomendable
+let ohDiosMio = new Function("s1","s2","return s1+s2;"); 
+console.log(ohDiosMio(20,40));
+
+</script>
+
+
+
+<body>
+    <h1>JS. Funciones</h1>    
+</body>
+
+</html>

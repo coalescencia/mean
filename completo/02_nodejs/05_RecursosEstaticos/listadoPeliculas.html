@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <script type="text/javascript" src="jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>    
+    <link rel="stylesheet" 
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
+          crossorigin="anonymous">
+
+</head>
+
+<script type="text/javascript">
+
+function nuevo(){
+    window.location = "formularioPeliculas.html";
+}
+
+function getPeliculas(){
+
+    /*DEPRECATED
+    $.ajax( { url     : "/peliculas",
+              success : rellenarTablaPeliculas,
+              error   : procesarError } );
+    */
+
+    /*
+    obj = $.ajax( { url : '/peliculas' } )
+    obj.done(rellenarTablaPeliculas);
+    obj.fail(procesarError);
+    obj.allways(lookonthebrightsideoflife);
+    */
+
+    $.ajax( { url : '/peliculas' } )
+    .done(rellenarTablaPeliculas)
+    .fail(procesarError);    
+}
+
+function rellenarTablaPeliculas(peliculas){
+
+    console.log(peliculas);
+
+    $("#tablaPeliculas").html('');
+    for(let a=0; a<peliculas.length; a++){
+        let pelicula = peliculas[a];
+        $( "<tr onclick='seleccionarPelicula("+pelicula.id+")'>"+
+                "<td>"+pelicula.titulo+"</td>"+
+                "<td>"+pelicula.director+"</td>"+
+                "<td>"+pelicula.genero+"</td>"+
+                "<td>"+pelicula.year+"</td>"+
+           "</tr>" ).appendTo($("#tablaPeliculas"));
+    }
+
+}
+
+function seleccionarPelicula(id){
+    sessionStorage.setItem('idPelicula', id);    
+    window.location = 'formularioPeliculas.html';
+}
+
+function procesarError(error){
+    console.log(error);
+}
+
+$(inicializar);
+
+function inicializar(){
+    getPeliculas();
+    $('#btnNuevo').click(nuevo);
+    $('#btnActualizar').click(getPeliculas);
+
+    //Cookie
+    let cookies = document.cookie;
+    console.log("Galletillas:"+cookies);
+
+    //session/local storage
+    let mensaje = sessionStorage.getItem('mensaje');
+    if(mensaje != null){
+        sessionStorage.removeItem('mensaje');
+        $("#mensaje").html(
+            '<div class="alert alert-success alert-dismissible">'+
+                '<button type="button" class="close" data-dismiss="alert">&times;</button>'+
+                mensaje+
+            '</div>'            
+        );
+    }
+
+}
+
+</script>
+
+<body>
+    
+    <div class="text-center page-header">
+        <h1>Peliculas 3000</h1>
+    </div>    
+
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Películas</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Directores</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Actores</a>
+            </li>
+        </ul>
+    </nav>
+
+    <br/>
+    <h3 class="text-center">
+            Listado de películas
+    </h3>
+    <br/>
+
+    <div class="row">
+        <div id="mensaje" class="col-xs-12 col-sm-8 offset-sm-2"></div>    
+    </div>
+
+    <div class="row">
+        <div class="col-xs-0 col-sm-2"></div>
+        <div class="col-xs-12 col-sm-8">
+
+            <div class="text-center">
+                <input type="button" id="btnNuevo"      class="btn btn-primary" value="Nuevo"/>
+                <input type="button" id="btnActualizar" class="btn btn-primary" value="Actualizar"/>
+            </div>
+
+            <br/>
+
+            <table class="table table-hover table-striped ">
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Director</th>
+                        <th>Género</th>
+                        <th>Año</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaPeliculas"></tbody>
+            </table>
+
+        </div>
+        <div class="col-xs-0 col-sm-2"></div>
+    </div>
+
+
+
+    
+</body>
+
+
+
+</html>

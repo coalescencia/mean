@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Función suma</title>
+</head>
+
+<script>
+
+    function suma(a) {
+        //console.log(arguments[1])
+        var sumar =0;
+        for(var i = 0; i < arguments.length; i++) {
+            sumar += arguments[i];
+        }
+        return sumar;
+    }
+
+    console.log(suma(13,5,6));
+
+
+</script>
+<body>
+  <h1>Funciones</h1>
+    
+</body>
+</html>

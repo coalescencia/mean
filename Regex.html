@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+   
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Expresiones</title>
+
+    <script>
+    
+       
+            
+        function password() {
+            var pass = document.getElementById("pass").value;
+            var exRegular = /^[A-Z]\w{7,}$/;
+            if(pass.match(exRegular)){
+                console.log("password suficientemente fuerte");
+            }else {
+                console.log("no es suficientemente segura");
+                
+            }
+            
+        }
+        
+
+        function probarEmail() {
+            email = document.getElementById("email").value;
+            var exRegular = /^[a-zA-Z0-9]{1,}@[a-zA-Z0-9]{1,}\.com$/;
+            if(email.match(exRegular)){
+                console.log("es un email correcto");
+            }else {
+                console.log("tu email NO es correcto");
+                
+            }
+        }
+
+       
+        
+    
+    </script>
+
+</head>
+<body>
+<h3>Validar fuerza de contraseña:</h3>
+
+<input type="text" id="pass">
+<button id="btnPass" onclick="password()">Verificar contraseña</button>
+
+<h3>Comprobar email correcto</h3>
+
+<input type="text" id="email">
+<button id="btnEmail" onclick="probarEmail()">Verificar email correcto</button>
+
+
+</body>
+</html>

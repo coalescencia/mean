@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<script type="text/javascript">
+
+function btnDale(){
+    //cualquier función asignada a una propiedad del tipo evento recibe 
+    //un objeto evento
+    console.log(arguments); //Aqui vemos el evento    
+    console.log("botón 'DALE' pulsado");
+
+    validarFormulario('latín');
+}
+
+function validarFormulario(idioma){
+    let ok = true;
+    if(document.getElementById("dato").value.trim() == ''){
+        alert("'Dato' es obligatorio");
+        ok = false;
+    }
+    return ok;
+}
+
+window.onload = function(){
+
+    document.getElementById("DALE").onclick = btnDale;
+    //Si lo hacemos asín cuando se pulse el botón 'idioma' será el EVENTO
+    //document.getElementById("Enviar").onclick = validarFormulario;
+
+    document.getElementById("Enviar").onclick = function(evento){
+       //usamos el evento para lo que sea 
+       let ok = validarFormulario('latin');
+       if( !ok ){
+           evento.preventDefault();
+       }
+    }
+
+}
+
+</script>
+
+<body>
+    
+    <h1>JS.Eventos</h1>
+
+    <input type="button" id="DALE" value="DALE"/>
+
+    <hr/>
+
+    <form action="XXX">
+        <input type="text" id="dato" name="dato" value=""/>
+        <input type="submit" id="Enviar" value="Enviar"/>
+    </form>
+
+</body>
+</html>

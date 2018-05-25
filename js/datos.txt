@@ -1,0 +1,4 @@
+esto es un archivo
+de datos
+que tiene unas cuantas
+filas

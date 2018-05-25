@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<script type="text/javascript">
+
+//Un array de js no es un array clásico
+//Un array de js son objetos
+//Un array de js no se declara con un tamañoni tiene un tamaño fijo
+var array1 = []; //Un bonito array
+var array2 = [1,2,3,4,5];
+//Losarrays en js no estan tipados
+var array3 = [1,"dos",3,"cuatro",false];
+
+//Accediendo a las posiciones de un array
+console.log(array2[0]);
+console.log(array2[20000]);
+
+//Como un array es un objeto tiene funciones y propiedades
+console.log("Longitud:"+array2.length);
+//Funciones para utilizar un array como una cola FIFO
+console.log("===========================================");
+console.log(array2);
+array2.push(6); //Añade al final
+console.log(array2);
+let primero = array2.shift(); //Entrega y elimina el primero
+console.log(array2);
+let ultimo = array2.pop(); //Entrega y elimina el último
+console.log(array2);
+
+//Tambien podemos crear un array con new pero no aporta nada
+//y no se recomienda
+let array4 = new Array();
+let array5 = new Array(1,2,3,4,"tocotó");
+
+//Añadiendo valores despues de la creacion
+console.log("===========================================");
+console.log(array5);
+array5[1] = "DOS"; //Aqui estamos sustituyendo el valor
+console.log(array5);
+
+//Añadiendo más allá del final
+array5[10] = 42; //Ahora el array tiene 11 posiciones rellenandose
+                 //con undefined las intermedias
+console.log(array5);
+
+//
+//Arrays asociativos
+//
+console.log("===========================================");
+let persona = [];
+persona["nombre"]    = "Bart";
+persona["direccion"] = "C/Evergreen Terrace";
+persona["telefono"]  = 555;
+console.log(persona);
+
+//Accediendo a valores de un array asociativo
+console.log(persona["nombre"]);
+console.log(persona.nombre);
+
+//Eliminando una entrada en un array asociativo
+delete persona["telefono"];
+ 
+//Declarando un array asociativo y dandole valores.
+//Esta sintaxis es mucho más económica
+let coche = { "marca"     : "ford",
+              "modelo"    : "focus",
+              "matricula" : "12345" };
+
+//disponemos de otra sintaxis para trabajar con arrays asociativos:
+producto = [];
+producto.fabricante = "Fabricante1";
+producto.nombre = "cosa variada";
+producto.peso = 5;
+console.log(producto);
+console.log(producto.nombre);
+
+//Podemos considerar un array asociativo como un objeto con
+//identidad (propuedades). Para añadirle funcionalidad:
+console.log("===========================================");
+let pelicula = { 'titulo'   : 'Alien',
+                 'director' : 'RS',
+                 'toString' : function(){
+                    console.log("Función to string de pelicula");
+                 }
+               };
+console.log(pelicula.titulo);
+pelicula.toString(); //invocando la función
+
+//Mezclando arrays indexados con asociativos...
+console.log("===========================================");
+let array6 = [];
+array6[0] = "Hola";
+array6[1] = "Que";
+array6[2] = "Tal"; //Hasta aqui es un array indexado
+console.log(array6);
+array6["dato"] = "Ojo al dato"; //Aqui lo convertimos en array asociativo
+//Las funciones de array tales como push, pop o atributos como length
+//dejan de funcionar predeciblemente
+console.log(array6);
+
+//Recorriendo arrays
+
+//Con un for normal (solo sirve para arrays indexados)
+console.log("===========================================");
+let array7 = [1,2,3,4,5];
+array7[20] = 21
+for(let a=0; a<array7.length; a++){
+    console.log(array7[a]);
+}
+
+//funcion for each (solo sirve para arrays indexados)
+console.log("===========================================");
+array8 = [10,20,30,40,50,60,70,80,90];
+//forEach recibe por parametro una funcion:
+//-void
+//-recibe un único parámetro
+let funcion = function(e){
+    console.log(e);
+}
+array8.forEach(funcion);
+
+//Imitación del forEach
+console.log("===========================================");
+array8.push(100);
+function forEach(func){
+    for(let a=0; a<array8.length; a++){
+        func(array8[a]);
+    }
+}
+forEach(funcion); //la de la línea 110
+
+//Para 'recorrer' arrays asociativos usamos el ////// for in  //////.
+//Tambien sirve para arrays idexados
+//For in recorre LAS CLAVES. Luego debemos nosotros preguntar por
+//los valores
+//for( clave in array )
+console.log("===========================================");
+for(let clave in persona){
+    //console.log("clave:"+clave+", valor:"+persona[clave]);
+    console.log(`clave: ${clave}, valor: ${persona[clave]}`);
+}
+
+//Recorriendo un array indexado con el for-in este
+console.log("===========================================");
+let array9 = [1,2,3,4,5];
+array9[20] = 500; //Este array tiene ahora 21 elementos
+for(let clave in array9){
+    console.log(`clave: ${clave}, valor: ${array9[clave]}`);
+}
+
+console.log("===========================================");
+
+////////// for of para recorrer array indexado /////////////
+//da el valor de cada elemento ///
+
+for(let numero of array8) {
+    console.log(numero);
+}
+
+
+</script>
+
+<body>
+
+    <h1>JS Arrays</h1>
+
+</body>
+</html>
+

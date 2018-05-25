@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Objetos 2</title>
+</head>
+
+<script>
+
+    // definimos prototipo:
+    let Coche = {
+        'marca': null,
+        'modelo': null,
+        'matricula': null
+        }
+
+    // creamos instancias:
+
+    let coche1 = Object.create(Coche); // no usamos new Libro porque Libro no lo declaramos como function sino como un objeto con {}
+    coche1.marca = 'ford';
+    let coche2 = Object.create(Coche);
+    coche2.marca = 'renault';
+    console.log(coche1);
+    console.log(coche2);
+
+    
+    let Libro = {
+        'titulo': null,
+        'autor': null,
+        'toString': function() {
+            return this.titulo+", "+this.autor;
+            }
+        }
+
+    let libro1 = Object.create(Libro);   
+    libro1.titulo = "El Quijote";
+    let libro2 = Object.create(Libro);
+    libro2.titulo = "El corazón de las tinieblas";
+    console.log(libro1);
+    console.log(libro2);
+   
+    // composición:
+    let Avion = {
+        'fabricante': { 'nombre': null},
+        'modelo' : null
+    }
+
+    let avion1 = Object.create(Avion);
+    avion1.modelo = "F-14 ";
+    avion1.fabricante.nombre = "Airbus";
+    let avion2 = Object.create(Avion);
+    avion2.modelo = "Su-27";
+    // los dos objetos comparten el mismo fabricante
+    console.log(avion1.fabricante.nombre);
+    console.log(avion2.fabricante.nombre);
+
+    //Añadiendo propiedades al prototipo a posteriori:
+    Libro.imprimirConsola = function() {
+        console.log("Titulo"+this.titulo+", "+this.autor);
+    }
+    libro1.imprimirConsola();
+    libro2.imprimirConsola();
+
+</script>
+<body>
+
+
+    
+</body>
+</html>

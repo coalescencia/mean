@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+   
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Array asociativo y password</title>
+
+    <script>
+    
+        function contarPalabras() {
+            var texto = document.getElementById("texto").value;
+            var listaPalabras = texto.split(" ");
+            
+            var arrayAsociativo = {};
+            
+            for(var i=0; i < listaPalabras.length; i++) {
+                if(arrayAsociativo[listaPalabras[i]]==undefined){
+                    arrayAsociativo[listaPalabras[i]] = 1;
+                }else{
+                    arrayAsociativo[listaPalabras[i]] += 1;
+                }
+                    
+             }
+                //console.log(arrayAsociativo);
+
+                 for (var palabra in arrayAsociativo){
+                    console.log("La palabra " + palabra + " tiene " + arrayAsociativo[palabra] + " repeticiones.");
+                    }
+                
+            }
+            
+        function password() {
+            var pass = document.getElementById("pass").value;
+            pass = pass.split("");
+            if((pass.length < 8) | (pass[0] != pass[0].toUpperCase())){
+                console.log("no es suficientemente segura");
+            }else {
+                console.log("password suficientemente fuerte");
+            }
+            
+        }
+        
+
+       
+        
+    
+    </script>
+
+</head>
+<body>
+    
+<h3>Contar número repeticiones de palabras</h3>
+
+<input type="text" id="texto">
+<button id="boton" onclick="contarPalabras()">Contar repetición palabras</button>
+
+<h3>Introducción contraseña:</h3>
+
+<input type="text" id="pass">
+<button id="btnPass" onclick="password()">Verificar contraseña</button>
+
+</body>
+</html>

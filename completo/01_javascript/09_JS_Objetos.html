@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<script type="text/javascript">
+
+//'this' dentro de una funcion es una referencia al objeto que
+//posee la funcion
+let libro = { 'titulo' : 'el quijote',
+              'saludar' : function(){
+                //Aqui this es el libro
+                console.log("hola, soy "+this.titulo);
+              } };
+console.log(libro.titulo);
+libro.saludar();              
+
+//Las funciones declaradas así se añaden al objeto window:
+function XXX(){
+    //Aqui this es 'window' 
+    console.log(this);
+}
+XXX();
+window.XXX();
+
+//
+//Funciones prototipo
+//
+function Cliente(){
+    //'this' cuando la función se invoca con 'new' es el objeto
+    //que se va a devolver
+    this.nombre    = 'Facundo';
+    this.direccion = '';
+    this.telefono  = '';
+}
+
+console.log(Cliente()); //devuelve undefined
+console.log(new Cliente()); //vemos que devuelve un objeto
+
+cliente1 = new Cliente(); //Si invocamos una función con 'new' nos
+                          //devuelven un objeto aunque no tenga return
+console.log(cliente1.nombre); //Este objeto tiene las propiedades nombre, dirección y teléfono
+
+//Cada vez que invocamos la función con 'new' obtenemos un objeto distinto
+cliente2 = new Cliente();
+cliente2.nombre = "Bender";
+cliente3 = new Cliente();
+cliente3.nombre = "Fry";
+console.log(cliente2);
+console.log(cliente3);
+
+//
+//Añadiendo funciones a los objetos
+//
+console.log("=========================");
+function Coche(){
+    this.marca     = null;
+    this.modelo    = null;
+    this.matricula = null;
+
+    //Si declaramos aqui las funciones cada instancia tiene una copia de la funcion
+    //y eso es un sin Dios
+    this.toString = function(){
+        return this.marca+", "+this.modelo+", "+this.matricula;
+    }
+}
+let coche1 = new Coche();
+coche1.marca     = "Renault";
+coche1.modelo    = "8";
+coche1.matricula = "M-973000";
+let coche2 = new Coche();
+coche2.marca     = "Simca";
+coche2.modelo    = "1200 TI";
+coche2.matricula = "M-1234-BC";
+console.log(coche1.toString());
+console.log(coche2.toString());
+
+//
+//Añadiendo funciones al objeto usando el PROTOTIPO
+//
+console.log("=========================");
+function Disco(){
+    this.titulo = null;
+    this.grupo  = null;
+    this.year   = null;
+}
+//Las funciones añadidas al prototipo serán compartidas por todas las instancias
+Disco.prototype.toString = function(){
+    return this.titulo+", "+this.grupo+", "+this.year;
+}
+
+let disco1 = new Disco();
+disco1.titulo = "Tommy";
+disco1.grupo  = "The Who";
+disco1.year   = 1969
+console.log(disco1.toString());
+
+//
+//Simulando un constructor
+//
+function Restaurante(nombre, direccion){
+    this.nombre = nombre;
+    this.direccion = direccion;
+}
+Restaurante.prototype.toString = function(){
+    return this.nombre+", "+this.direccion;
+}
+let restaurante1 = new Restaurante('Restaurante Tal','C/Pascual');
+let restaurante2 = new Restaurante('Restaurante 3000','C/Tocotó');
+console.log(restaurante1.toString());
+console.log(restaurante2.toString());
+
+//
+//Funciones 'privadas'
+//
+function Ciudad(nombre, poblacion){
+    this.nombre = nombre;
+    this.poblacion = poblacion;
+
+    //Esto sería una funcion 'publica'
+    this.f1 = function(){
+        console.log("F1, 'publica'");
+        //Podemos acceder a las funciones 'privadas' desde las funciones 'publicas'
+        f2();
+    }
+    //Y esto una función 'privada' (pero es una nested function/clojure)
+    function f2(){
+        console.log("F2, 'privada'");
+    }
+}
+
+let ciudad1 = new Ciudad('Getafe',150000);
+ciudad1.f1();
+//ciudad1.f2();
+
+//
+//'atributos' 'privados'
+//
+function Pelicula(titulo, director, y){
+    //Si declaramos así los 'atributos' son accesibles desde fuera:
+    this.titulo   = titulo;
+    this.director = director;
+    
+    if( y < 1900 ){
+        //lanzar un error
+    }
+    //Si no añadimos con 'this' el atributo al objeto decimos que es 'privado'
+    let year = y;
+
+    //Podemos crear métodos accesores para el atributo privado
+    this.getYear = function(){
+        return year;
+    }
+    this.setYear = function(y){
+        if(y > 1900){
+            year = y;
+        }
+    }
+
+}
+pelicula1 = new Pelicula("Die Hard","John McTiernan",1950);
+//pelicula1.year = 500;
+console.log(pelicula1.getYear());
+pelicula1.setYear(2000);
+console.log(pelicula1.getYear());
+pelicula1.setYear(1000);
+console.log(pelicula1.getYear());
+
+//
+//Propiedades 'estáticas'
+//
+function Ordenador(marca, modelo){
+    this.marca = marca;
+    this.modelo = modelo;
+
+    if( typeof Ordenador.contador == 'undefined' ){
+        Ordenador.contador = 0;
+    }
+    Ordenador.contador++;
+}
+ordenador1 = new Ordenador('Amstrad','CPC-464');
+ordenador2 = new Ordenador('Sinclair','ZX-Spectrum');
+ordenador3 = new Ordenador('Commodore','C64');
+ordenador4 = new Ordenador('Philips','MSX');
+console.log(Ordenador.contador);
+
+</script>
+
+<body>
+    
+    <h1>JS Objetos</h1>
+
+</body>
+</html>

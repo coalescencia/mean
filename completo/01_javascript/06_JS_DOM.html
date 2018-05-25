@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<script>
+
+console.log("Inicio");
+
+function pruebasDOM(){
+
+    //document es un objeto implícito que representa al árbol DOM
+    console.log(document);
+
+    //document tiene funciones para localizar nodos en el árbol
+
+    //Búsqueda por id
+    nodo = document.getElementById("dato");
+    console.log(nodo);
+    console.log(nodo.value); //Accediendo a las propiedades del nodo
+
+    //Búsqueda por name.
+    //Devuelve un array indexado
+    nodos = document.getElementsByName("accion");
+    console.log(nodos);
+    for(a=0; a<nodos.length; a++){
+        console.log(nodos[a].value);
+    }
+
+    //Búqueda por nombre de etiqueta
+    nodos = document.getElementsByTagName("td");
+    for(a=0; a<nodos.length; a++){
+        console.log(nodos[a].id);
+    }
+
+    //Búsqueda por estilo css
+    nodos = document.getElementsByClassName("xXx");
+    for(a=0; a<nodos.length; a++){
+        console.log(nodos[a].id);
+    }
+
+    //Para buscar nodos en un documento XML:
+    //document.getElementsByTagNameNS("XXX");
+
+    //
+    //Buscando en los hijos de un nodo
+    console.log("========================");
+    formulario = document.getElementById("formulario");
+    hijos = formulario.childNodes;
+    for(a=0; a<hijos.length; a++){
+        console.log(hijos[a]); 
+    }
+}
+
+function validar(){
+
+    nodo = document.getElementById("nombre");
+    if( nodo.value.trim()=="" ){
+        alert("El nombre es obligatorio");
+    }
+    nodo = document.getElementById("direccion");
+    if( nodo.value.trim()=="" ){
+        alert("La dirección es obligatoria");
+    }
+    
+}
+
+function prepararParametros(){
+
+    //accion nombre direccion telefono ciudad observaciones
+
+    //Método grán fajador
+    parametros = "nombre="+document.getElementById("nombre").value+"&"+
+                 "direccion="+document.getElementById("direccion").value+"&"+
+                 "telefono="+document.getElementById("telefono").value+"&"+
+                 "ciudad="+document.getElementById("ciudad").value+"&"+
+                 "observaciones="+document.getElementById("observaciones").value;
+    //alert(parametros);
+
+    formulario = document.getElementById("formulario");
+    //formulario.childNodes: los hijos del formulario solo son los botones y la tabla. no nos sirve
+
+    //Los nodos de tipo formulario tienen un segundo array en el que
+    //se incluyen los campos del formulario
+    console.log("=====================");
+    campos = formulario.elements;
+    parametros = "";
+    for(a=0; a<campos.length; a++){
+        nodo = campos[a];
+        console.log(nodo.id);
+
+        if( nodo.type == 'button' || nodo.type == 'submit' ){
+            continue;
+        }
+
+        parametros = parametros + nodo.name + "=" + nodo.value + "&";
+    }
+
+    alert(parametros);
+
+}
+
+</script>
+
+
+<body onload="pruebasDOM()">
+    
+    <h1>Ejemplo del árbol DOM</h1>
+    
+    Nombre: <input type="text" name="dato" id="dato" size="25" value="texto" class="xXx"/>
+    
+    <hr/>
+    
+    <form name="formulario" id="formulario" action="#" method="get"> 
+        <input type="button" name="accion" value="Validar" onclick="validar()"/>
+        <input type="button" value="Preparar parametros" onclick="prepararParametros()"/>
+        <input type="submit" name="accion" value="Insertar"/>
+        <input type="submit" name="accion" value="Modificar"/>
+        <input type="submit" name="accion" value="Borrar"/>
+        
+        <table>
+            <tr>
+                <td id="td1">Nombre</td>
+                <td id="td2">
+                    <input type="text" name="nombre" id="nombre"/>
+                </td>
+            </tr>
+            <tr>
+                <td id="td3">Dirección</td>
+                <td id="td4">
+                    <input type="text" name="direccion" id="direccion"/>
+                </td>
+            </tr>
+            <tr>
+                <td id="td5">Teléfono</td>
+                <td id="td6">
+                    <input type="text" name="telefono" id="telefono"/>
+                </td>
+            </tr>
+            <tr>
+                <td id="td7">Ciudad</td>
+                <td id="td8">
+                    <select name="ciudad" id="ciudad">
+                        <option>Getafe</option>
+                        <option>Madrid</option>
+                        <option>Salamanca</option>
+                        <option>Santa Pola</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td id="td9">Observaciones</td>
+                <td id="td10">
+                    <textarea name="observaciones" id="observaciones"></textarea>
+                </td>
+            </tr>
+        </table>
+    </form>
+        
+</body>
+
+</html>

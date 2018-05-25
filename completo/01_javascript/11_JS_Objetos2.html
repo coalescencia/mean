@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<script type="text/javascript">
+
+//Definimos un prototipo (es un objeto normal y corriente)
+let Coche = { 'marca'     : null,
+              'modelo'    : null,
+              'matricula' : null };
+//A partir del prototipo creamos nuevas instancias
+let coche1 = Object.create(Coche);
+coche1.marca = 'Ford';
+let coche2 = Object.create(Coche);
+coche2.marca = 'Renault';
+console.log(coche1);
+console.log(coche2);
+
+//Añadiendo funciones al prototipo
+let Libro = { 'titulo' : null,
+              'autor'  : null,
+              'toString' : function(){
+                    return this.titulo+", "+this.autor;
+                } };
+let libro1 = Object.create(Libro);  
+libro1.titulo = "El quijote";              
+let libro2 = Object.create(Libro);                
+libro2.titulo = "El corazón de las tinieblas";     
+console.log(libro1);         
+console.log(libro2);   
+
+//Objet.create crea un nuevo objeto con las mismas propiedades que el prototipo
+//Y CON LOS MISMOS VALORES!
+console.log("=================");
+let Avion = { 'fabricante' : { 'nombre' : null },
+              'modelo'     : null,
+              'toString'   : function(){ 
+                    console.log('hola')
+                }
+            };
+let avion1 = Object.create(Avion);
+avion1.modelo = 'F-14 Tomcat';
+avion1.fabricante.nombre = 'Grumman';
+let avion2 = Object.create(Avion);
+avion2.modelo = 'Su-27';
+avion2.fabricante.nombre = 'Sukhoi';
+//Los dos aviones comparten el mismo fabricante
+console.log(avion1.fabricante.nombre);
+console.log(avion2.fabricante.nombre);
+
+//Añadiendo propiedades al prototipo a posteriori
+console.log("=================");
+Libro.imprimirConsola = function(){
+    console.log("Titulo:"+this.titulo+", autor:"+this.autor);
+}
+//el prototipo de 'libro2' es 'Libro'
+//libro2 = Object.create(Libro);
+//
+libro1.imprimirConsola();
+libro2.imprimirConsola();
+
+//
+//Podemos simular 'Herencia'
+//
+let Persona = { 'nombre'    : null,
+                'direccion' : null,
+                'telefono'  : null,
+                'toString'  : function(){
+                    console.log(this.nombre+","+this.direccion+","+this.telefono);
+                }};
+let Cliente = Object.create(Persona);
+Cliente.cuentaBancaria = null;
+let Empleado = Object.create(Persona);
+Empleado.departamento = null;
+let Visitante = Object.create(Persona);
+Visitante.motivo = null;
+
+let cliente1 = Object.create(Cliente);
+
+</script>
+
+<body>
+    
+    <h1>Objetos 2</h1>
+
+</body>
+</html>

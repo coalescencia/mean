@@ -1,0 +1,126 @@
+let fs = require('fs');
+let http = require('http');
+let negocioPeliculas = require("./05_NegocioPeliculas.js");
+
+let servidor = http.createServer(function(request, response) {
+    let metodo = request.method.toUpperCase();
+    let recurso = request.url;
+
+    //GET peliculas
+    if(metodo == 'GET' && recurso == '/peliculas') {
+        listarPeliculas(request, response);     
+    //GET peliculas/{id}   
+    } else if(metodo == 'GET' && recurso == '/peliculas/id') {
+
+   //POST peliculas - guardar     
+    } else if(metodo == 'POST' && recurso == '/peliculas') {
+        insertarPelicula(request, response);
+
+    //PUT peliculas - modificar (sustituye un recurso por otro, PATCH modifica el recurso)   
+    } else if(metodo == 'PUT' && recurso == '/peliculas/id') {
+
+        
+   //DELETE peliculas/{id}
+    } else if(metodo == 'DELETE' && recurso == '/peliculas/id') {
+
+        
+    } else {  
+        leerRecursoEstatico(request, response);
+    }
+
+});
+
+servidor.listen(4000);
+
+
+function leerRecursoEstatico(request, response) {
+    
+    if(request.method.toUpperCase() != 'GET') {
+        crearError(405, response);
+        return;
+    }
+
+    let recurso = request.url;    
+    let extension = recurso.split(".")[1];
+
+    if(typeof extension == 'undefined'){
+        crearError(400, response);
+        return;
+    }
+
+    fs.readFile("./05_RecursosEstaticos"+recurso, function(error, data){
+        // si todo va bien error es null
+       
+        if(error != null) {
+            for(propiedad in error) {
+                console.log("============================");
+                console.log(error[propiedad]);
+            }
+            crearError(404, response);
+            return;
+        }
+
+        let contentType = '';
+        switch(extension) {
+            case 'html': contentType = 'text/html ; charset=UTF-8';
+                         break;
+            case 'css': contentType = 'text/css';
+                         break;
+            case 'js': contentType = 'text/javascript';
+                         break;
+            case 'txt': contentType = 'text/plain';
+                         break;                                        
+        }
+
+        response.writeHead(200,{'content-type' : contentType} );
+        response.end(data.toString());
+    });
+
+}
+
+function crearError(codigo, response){
+    response.writeHead(codigo,{'content-type' : 'text/html ; charset=UTF-8'});
+    let html = `<h1>${codigo}</h1>`;
+    switch(codigo) {
+        case 405: html = `${html} <h2>Sólo aceptamos peticiones GET</h2> `;
+                break;
+        case 400: html = `${html} <h2>Petición incorrecta</h2> `;
+                break;
+        case 404: html = `${html} <h2>Recurso no encontrado</h2> `;
+                break;
+    }
+   response.end(html);
+}
+
+
+//////////////////////////////////////////////////////////////////////////////
+/// LÓGICA DE CONTROL DEL SERVICIO REST
+//////////////////////////////////////////////////////////////////////////////
+
+function listarPeliculas(request, response) {
+    let peliculas = negocioPeliculas.listar();
+    response.writeHead(200, {'content-type': 'application/json'});
+    response.end(JSON.stringify(peliculas));
+}
+
+function insertarPelicula(request, response) {
+    console.log("insertar pelicula");
+
+    // evento que se ejecuta cuando se ha completado de leer el body
+    // body es un objeto buffer
+    request.on('data', function(body) {
+        console.log(body.toString());
+        let pelicula = JSON.parse(body.toString());
+        let mensaje = negocioPeliculas.insertar(pelicula);
+        if(mensaje == "OK") {
+            response.writeHead(201, { contentType: 'text/plain'});
+            response.end("Todo fue realizado con éxito");
+        } else {
+            response.writeHead(400, { contentType: 'text/plain'});
+            response.end(mensaje);
+        }
+    });
+
+    console.log("YAAA, porque esto es asíncrono");
+
+}

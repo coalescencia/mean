@@ -1,0 +1,66 @@
+let fs = require('fs');
+let http = require('http');
+
+
+let servidor = http.createServer(function(request, response){
+
+    let metodo = request.method;
+
+    if( metodo.toUpperCase() != 'GET' ){
+        response.writeHead(405, { 'content-type' : 'text/html' });
+        response.end("<h1>405</h1><h2>Solo aceptamos peticiones GET</h2>");
+        return;
+    } 
+    
+    leerRecursoEstatico(request, response);
+
+});
+servidor.listen(3000);
+
+function leerRecursoEstatico(request, response){
+
+    let recurso = request.url;
+
+    let extension = recurso.split(".")[1];
+    if( typeof extension == 'undefined' ){
+        response.writeHead(400, { 'content-type' : 'text/html' });
+        response.end("<h1>400</h1><h2>Peticion incorrecta</h2>");
+        return;
+    }
+
+    fs.readFile("./ficheros"+recurso, function(error, data){
+
+        if( error != null ){
+            console.log("=================================");
+            for(propiedad in error){
+                console.log(error[propiedad]);
+            }
+
+            response.writeHead(404, { 'content-type' : 'text/html' });
+            response.end("<h1>404</h1><h2>Recurso no encontrado</h2>");
+            return;
+        }        
+        
+        let contentType = '';
+        switch(extension){
+            case 'html' : contentType = 'text/html';
+                          break;
+            case 'css'  : contentType = 'text/css';
+                          break;
+            case 'js'   : contentType = 'text/javascript';
+                          break;
+            case 'txt'  : contentType = 'text/plain';
+                          break;
+        }
+
+        response.writeHead(200, { 'content-type' : contentType });
+        response.end(data.toString());
+    });
+
+}
+
+
+
+
+
+

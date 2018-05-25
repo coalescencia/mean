@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css?family=Tajawal');
+
+body{
+padding: 40px;
+color: #333333;
+font-family: 'Tajawal', sans-serif;
+
+}
+
+.centrado {
+	width: 90%;
+    margin: 30px auto;
+	padding: 30px 20px;
+	border-radius: 10px 10px 10px 10px;
+	border: 1px solid #ffe4b5;
+	
+}
+
+a {
+	text-decoration: none;
+	color: #d2691e;
+}
+
+img {
+	width: 400px;
+	border-radius: 15px 15px 15px 15px;
+}
+
+.centrado h2 {
+
+	color: #deb887;
+}
+
+nav {
+	width: 30%;
+	float: left;
+}
+
+section {
+	width: 70%;
+	float: right;
+}
+
+footer {
+	clear: both;
+	width: 100%;
+	height: 45px;
+	background-color: #deb887;
+	
+	padding: 10px 10px;
+	
+}
+

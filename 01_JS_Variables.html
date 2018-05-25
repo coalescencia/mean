@@ -1,0 +1,105 @@
+<html>
+
+<script type="text/javascript">
+
+//alert("HOLA");
+console.log("Hola.");
+
+//Variables
+//No están tipadas
+
+//Tipos de variable: numerico, booleano, cadena de texto, objeto
+numero = 1; 
+numeroDecimal = 1.5;
+texto1 = "HOLA";
+texto2 = 'hola';
+
+activo = true;
+visitado = false;
+
+//Una variable declarada así da error:
+//dato;
+
+//Una variable declarada ysin valor es'undefined'. Significa
+//que no solo carece de valor sino que ignoramos su tipo
+var dato;
+
+//Tambienpodemosusar null;
+var dato2 = null;
+
+console.log(dato);
+console.log(dato2);
+
+//Comprobando que algo es un número
+var numero2 = 42;
+console.log("isNaN:"+isNaN(numero2));
+
+//typeOf
+//devuelve un string indicando el tipo
+//undefined
+//number
+//string
+//boolean
+//object
+console.log( typeof numero2);
+if( typeof numero2 == "number"){
+    console.log("number");
+}
+if( typeof dato == "undefined"){
+    console.log("dato es undefined");
+}
+
+//var
+console.log("===========================================");
+txt1 = "Hola-1";
+var txt2 = "Hola-2";
+
+function movida(){
+    txt3 = "Hola-3";
+    var txt4 = "Hola-4";
+    console.log(txt1);
+    console.log(txt2);
+
+    if(5>1){
+        let txt5 = "Hola-5";
+    }
+    console.log(txt5);
+
+}
+
+movida();
+
+console.log(txt3);
+//console.log(txt4); //Esta no la vemos fuera de la función
+
+//
+//Novedades en JS6
+//
+
+//Constantes
+const alturaMax = 100;
+//alturaMax = 75;
+
+//Variables declaradas en un bloque de código
+console.log("===========================================");
+{
+    let dato3 = 5;
+}
+//console.log("dato3:"+dato3); //Esto no se ve
+
+var v1 = 5;
+var v1 = 10; 
+
+//Con let no podemos redeclarar variables
+let l1 = 15;
+//let l1 = 20;
+
+</script>
+
+<body>
+
+    <h1>JS. Variables</h1>
+
+</body>
+
+</html>

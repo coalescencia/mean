@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>trabajo con arrays</title>
+
+    <script>
+        
+        /* var x = [];
+        x.push(3); // agrega elemento al final del array
+        x.push(45);
+
+        x.pop() // borra el último elemento y lo devuelve
+        shift() // borra elementos al comienzo del array y lo devuelve
+        unshift() // agrega elementos al comienzo del array
+        concat() // concatenación array
+        join() // transforma array en cadena de texto miarray.join(), miarraya.join(#)
+        split() // separara una cadena en un array. cadena.split(;)
+        reverse() // realiza el reverso de la cadena */
+        
+        var miArray = [];
+        
+        function introducir() {
+            a = document.getElementById("texto").value;
+            miArray.push(a);
+        }
+
+        function mostrar() {
+
+            console.log(miArray);
+            if(miArray.length > 0) {
+                document.getElementById("listar").innerHTML = ""; 
+            }          
+            for(var i =0; i < miArray.length; i++) {  
+                document.getElementById("listar").innerHTML += "<li>" + miArray[i] ;                   
+            }
+            
+        }
+
+        
+    </script>
+</head>
+<body>
+
+    <input type="text" id="texto">
+    <button onclick="introducir()">Meter</button>
+    <button onclick="mostrar()">Mostrar</button>
+    <div id="listar">
+
+
+    </div>
+    
+</body>
+</html>

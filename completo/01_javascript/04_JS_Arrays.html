@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+</head>
+
+<script>
+
+//Los arrays en javascript no son verdaderos arrays
+//los arrays en js son objetos
+//No se declaran con un tamaño y pueden crecer
+let array = []; //Un array;
+let array2 = [ 1,2,3,4,5 ];
+//No estan tipados
+let array3 = [ 1, 'dos', true, 'y ya está' ];
+
+//Array indexados. Accediendo a posiciones:
+array[0] = "UNO";
+array[1] = "DOS";
+array[2] = "TRES";
+
+console.log(array[2]);
+//No se comprueban los límites al acceder
+console.log(array[20000]); 
+
+console.log(array.length);
+//Tampoco se comprueban los límites al añadir
+array[42] = 'HOLA';
+console.log(array.length);
+console.log(array);
+
+//Los arrays como objetos que son tienen propiedades
+console.log(array3.length); //longitud
+//tienen funciones
+array3.push("MOVIDA"); //Añade al final del array
+//Se puede utilizar un array como una cola FIFO
+let array4 = [];
+array4.push("UNO");
+array4.push("DOS");
+array4.push("TRES");
+array4.push("CUATRO","CINCO","SEIS"); //Atiende
+console.log(array4.shift()); //Devuelve y elimina el primero
+console.log(array4.pop()); //Devuelve y elimina el último
+console.log(array4);
+
+//Tambien se puede crear un array con 'new' pero no aporta nada
+let array5 = new Array();
+let array6 = new Array(1,2,3,4,5,6);
+
+//
+//Arrays asociativos
+//
+//Estructuras de datos con pares clave-valor
+//Se declaran igual que los arrays indexados (de hecho pueden ser mixtos)
+console.log("=================================");
+let persona = [];
+persona["nombre"]    = "Bart";
+persona["direccion"] = "C/Evergreen Terrace";
+persona["telefono"]  = 555;
+//Para acceder al los valores debemos conocer las claves
+console.log(persona["nombre"]);
+console.log(persona);
+//Para eliminar una clave y su valor
+delete persona["nombre"]; 
+console.log(persona);
+
+//La propiedad 'length' no funciona correctamente cuando el array es asociativo
+console.log("Length:"+persona.length);
+
+//Es posible tener un array mitad indexado, mitad asociativo
+console.log("=================================");
+let array7 = [];
+array7.push(11);
+array7.push(22);
+array7.push(33);
+array7.push(44);
+console.log(array7);
+console.log(array7.length);
+array7["dato"] = "viernes";
+array7["info"] = "hola";
+console.log(array7);
+console.log(array7.length);
+array7.push(55);
+console.log(array7);
+console.log(array7.length);
+
+//
+//
+coche = [];
+coche["marca"]     = "Fiat";
+coche["modelo"]    = "Uno 45s rojo";
+coche["matricula"] = "M-1234-JP";
+console.log(coche["marca"]);
+//Disponemos de otra sintaxis para trabajar con arrays asociativos: el punto
+producto = [];
+producto.fabricante = "Fabricante1";
+producto.nombre     = "Chintáfono";
+producto.peso       = 5;
+console.log(producto);
+console.log(producto.nombre);
+
+//Disponemos tambien de otra sintaxis para la declaración de arrays asociativos
+let libro = { 'titulo' : 'La isla del tesoro',
+              'autor'  : 'RLS',
+              'ISBN'   : '1234' };
+//Podemos seguir añadiendo claves al array despues de haberlo declarado
+libro.paginas = 200;
+libro['year'] = 1850;
+
+//                                                    //
+//En realidad los objetos en JS son arrays asociativos//
+//      
+//No hay una diferenciación entre identidad (o estado) y funcionalidad
+//en un objeto javascript. Hablamos únicamente de PROPIEDADES
+let avion = { 'fabricante' : 'Panavia',
+              'modelo'     : 'Tornado',
+              'year'       : 1979,
+              'saludar'    : function(){
+                                console.log("Hola que tal");
+                             } 
+            };
+console.log( avion.modelo );
+avion.saludar();
+
+//
+//Recorriendo arrays
+//
+
+//Con un for normal, solo para arrays indexados
+console.log("=================================");
+for(let a=0; a<array3.length; a++){
+    console.log(array3[a]);
+}
+
+//Con un for each, solo para arrays indexados
+console.log("=================================");
+let array8 = [ 10, 20, 30, 40, 50, 60, 70, 80 ];
+//La funcion forEach recibe como parámetro una funcion
+//Esta funcion será 'void' y recibirá por parámetro:
+//-el elemento del array 
+//-la posicion que ocupa
+//-el propio array
+let f = function(elem, otraCosa, otraMovida){
+    console.log(elem+","+otraCosa+","+otraMovida);
+}
+array8.forEach(f);
+
+//Esto es igual:
+array8.forEach(function(elem, otraCosa, otraMovida){
+    //console.log(elem+","+otraCosa+","+otraMovida);
+});
+
+//Una aproximación de como es la funcion forEach 'por dentro'
+array8.forEachChungo = function(funcion){
+    for(let a=0; a<array8.length; a++){
+        funcion(array8[a], a, array8);
+    }
+}
+array8.forEachChungo(f);
+
+//Con un for-in
+//Válido para arrays indexados y asociativos
+//Recorre LAS CLAVES
+for(let clave in coche){
+    //Si queremos el valor tenemos que pedirlo expresamente
+    //console.log(coche.clave); con el punto no podemos
+    console.log(clave+":"+coche[clave]);
+}
+
+//Recorriendo un array indexado con for-in
+for(let clave in array8){
+    //Si queremos el valor tenemos que pedirlo expresamente
+    //console.log(coche.clave); con el punto no podemos
+    console.log(clave+":"+array8[clave]);
+}
+
+//for of, para recorrer un array indexado
+console.log("=================================");
+for(let numero of array8){
+    console.log(numero);
+}
+
+
+
+</script>
+
+<body>
+    <h1 id="titulo">Arrays</h1>
+</body>
+</html>

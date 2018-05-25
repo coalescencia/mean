@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<script type="text/javascript">
+
+let url = 'http://localhost:8080/Ej01_REST/servicios/';
+
+function peticionAJAX(parametros){
+    let url = parametros.url;
+    let metodo = parametros.metodo;
+    if(typeof metodo == 'undefined'){
+        metodo = 'get';
+    }
+    let params = parametros.parametros;
+    let asincrono = parametros.asincrono;
+    if( typeof asincrono == 'undefined' ){
+        asincrono = true;
+    }
+    let success = parametros.success;
+    let error = parametros.error;
+    let body = parametros.body;
+    let contentType = parametros.contentType;
+
+    let xmlHttp = new XMLHttpRequest();
+    xmlHttp.open(metodo,url+"?"+params,asincrono);
+    xmlHttp.onreadystatechange = function(){
+        if(this.readyState == 4){
+            if( this.status == 200 ){
+                let respuesta = this.responseText;
+                if( respuesta.length > 0 ){
+                    success(JSON.parse(respuesta));
+                } else {
+                    success();
+                }
+            } else {
+                if( typeof error != 'undefined'){
+                    error();
+                }
+            }
+        }
+    }
+    if(typeof contentType != 'undefined'){
+        xmlHttp.setRequestHeader('content-type',contentType);        
+    }
+    xmlHttp.send(body);
+}
+
+function getPeliculas(){
+
+    console.log("HABER");
+    peticionAJAX( { 'url' : url+"peliculas",
+                    'success' : rellenarTablaPeliculas,
+                    'error' : procesarError
+                  } );
+
+    /*
+    let xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("get",url+"peliculas",true);
+    xmlHttp.onreadystatechange = function(){
+        if(this.readyState == 4){
+            if( this.status == 200 ){
+                let json = this.responseText;
+                let objetos = JSON.parse(json);
+                rellenarTablaPeliculas(objetos);
+            } else {
+                procesarError();
+            }
+        }
+    }
+    xmlHttp.send();
+    */
+
+}
+
+function rellenarTablaPeliculas(peliculas){
+
+    let html = "";
+    for(let a=0; a<peliculas.length; a++){
+        let pelicula = peliculas[a];
+        html = html + "<tr>"+
+                        "<td>"+pelicula.titulo+"</td>"+
+                        "<td>"+pelicula.director+"</td>"+
+                        "<td>"+pelicula.genero+"</td>"+
+                        "<td>"+pelicula.year+"</td>"+
+                    "</tr>";
+    }  
+    
+    let tabla = document.getElementById("tablaPeliculas");
+    tabla.innerHTML = html;  
+}
+
+function insertar(){
+
+    let pelicula = {
+        'titulo'   : document.getElementById("titulo").value,
+        'director' : document.getElementById("director").value,
+        'genero'   : document.getElementById("genero").value,
+        'year'     : document.getElementById("year").value
+    }
+    let json = JSON.stringify(pelicula);
+
+    peticionAJAX( { 'url'         : url+"peliculas",
+                    'metodo'      : 'post',
+                    'body'        : json, 
+                    'contentType' : 'application/json',
+                    'success'     : getPeliculas } );
+
+    /*
+    let xmlHttp = new XMLHttpRequest();
+
+    xmlHttp.open("post", url+"peliculas", true);
+    xmlHttp.onload = function(){
+        getPeliculas();
+    };
+    xmlHttp.onerror = function(){
+        procesarError();
+    }
+    xmlHttp.setRequestHeader('content-type','application/json');
+    xmlHttp.send(json);
+    */
+}
+
+function procesarError(){
+    alert("ZASCA!");
+}
+
+window.onload = function(){
+    document.getElementById("btnActualizar").onclick = getPeliculas;
+    document.getElementById("btnInsertar").onclick = insertar;
+    getPeliculas();
+}
+
+</script>
+
+<body>
+
+    <div align="center">
+        <input type="button" id="btnInsertar" value="Insertar"/>
+        <input type="button" id="btnActualizar" value="Actualizar"/>
+    </div>
+
+    <form id="formulario">
+        <table align="center">
+            <tr>
+                <td>Titulo</td>
+                <td>
+                    <input type="text" name="titulo" id="titulo"/>
+                </td>                
+            </tr>
+            <tr>
+                <td>Director</td>
+                <td>
+                    <input type="text" name="director" id="director"/>
+                </td>                
+            </tr>
+            <tr>
+                <td>Genero</td>
+                <td>
+                    <input type="text" name="genero" id="genero"/>
+                </td>                
+            </tr>
+            <tr>
+                <td>Año</td>
+                <td>
+                    <input type="text" name="year" id="year"/>
+                </td>                
+            </tr>
+        </table>
+        
+    </form>
+
+
+    <table align="center" border="1">
+        <tr>
+            <th>Título</th>
+            <th>Director</th>
+            <th>Género</th>
+            <th>Año</th>
+        </tr>
+        <tbody id="tablaPeliculas"></tbody>
+    </table>
+
+</body>
+
+</html>
