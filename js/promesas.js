@@ -3,6 +3,8 @@
 
 // las promesas son asíncronas:
 
+//    https://scotch.io/tutorials/javascript-promises-for-dummies
+
 var isMomHappy = true;
 
 var willIGetNewPhone = new Promise(
@@ -69,7 +71,7 @@ var askMom = function () {
 askMom();
 
 
-// hacer ejemplo, promesa, si apruebas las asignaturas prometes celebrarlo
+// hacer ejemplo con promesa: si apruebas las asignaturas prometes celebrarlo
 
 
 /* ES6 */
